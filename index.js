@@ -10,6 +10,9 @@
   var urlencode = require('urlencode');
 
   var srcDir = process.argv[2];
+  var srcDir = process.argv[2];
+  var solrCoreName = process.argv[3];
+  var solrRootPath = process.argv[4];
  
   options = {
     followLinks: false
@@ -75,7 +78,7 @@
             var resourceName = "&literal.resourcename="+urlencode(fileStats.name);
 
             var filePath = root.replace(/(\s+|&)/g, '\\$1')+'/'+fileStats.name.replace(/(\s+|&)/g, '\\$1');
-            console.log('bin/post -c Documents '+filePath+' -params "'+solrKeywordsLiteral+solrServiceAreaLiteral+resourceName+'"');
+            console.log(solrRootPath+'bin/post -c '+solrCoreName+' '+filePath+' -params "'+solrKeywordsLiteral+solrServiceAreaLiteral+resourceName+'"');
             console.log();
 
             next();
