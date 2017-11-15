@@ -1,0 +1,17 @@
+{
+  "name": "solr-walkjs",
+  "version": "1.0.0",
+  "description": "A script to generate solr post statements",
+  "main": "index.js",
+  "dependencies": {
+    "glob": "^7.1.2",
+    "urlencode": "^1.1.0",
+    "walk": "^2.3.9"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Charles Campbell",
+  "license": "ISC"
+}
