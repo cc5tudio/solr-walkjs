@@ -10,7 +10,6 @@
   var urlencode = require('urlencode');
 
   var srcDir = process.argv[2];
-  var srcDir = process.argv[2];
   var solrCoreName = process.argv[3];
   var solrRootPath = process.argv[4];
  
