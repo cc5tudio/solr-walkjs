@@ -38,7 +38,6 @@
     next();
   });
 
-  var solrKeywordsLiteral;
   var keywordsHash = {
 
   }
@@ -55,7 +54,8 @@
                     return console.log(err);
                 }
 
-                solrKeywordsLiteral = "literal.keywords=" + data.split(",").map(function(e) {
+                var solrKeywordsLiteral = "literal.keywords=" + data.split(",").map(function(e) {
+
                                                         e = urlencode(e.trim()).toLowerCase();
                                                         return e;
 
@@ -88,7 +88,7 @@
                         return console.log(err);
                     }
 
-                    solrKeywordsLiteral = "literal.keywords=" + data.split(",").map(function(e) {
+                    var solrKeywordsLiteral = "literal.keywords=" + data.split(",").map(function(e) {
                             e = urlencode(e.trim()).toLowerCase();
                             return e;
 
@@ -106,9 +106,6 @@
                 console.log(solrRootPath+'bin/post -c '+solrCoreName+' '+filePath+' -params "'+keywordsHash[root]+solrServiceAreaLiteral+resourceName+solrServiceAreaDescendentPath+'"');
                 next();
             }
-
-
-
 
         }
     } else {
