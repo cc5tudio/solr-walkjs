@@ -38,7 +38,6 @@
     next();
   });
 
-  var solrKeywordsLiteral;
   var keywordsHash = {
 
   }
@@ -55,7 +54,7 @@
                     return console.log(err);
                 }
 
-                solrKeywordsLiteral = "&literal.keywords=" + data.split(",").map(function(e) {
+                var solrKeywordsLiteral = "literal.keywords=" + data.split(",").map(function(e) {
                                                         e = urlencode(e.trim()).toLowerCase();
                                                         return e;
 
@@ -81,8 +80,12 @@
 
             var filePath = root.replace(/(\s+|&)/g, '\\$1')+'/'+fileStats.name.replace(/(\s+|&)/g, '\\$1');
 
+	    console.log(filePath);
+	    console.log(keywordsHash[root]);
+  	    console.log(" ");
+            var command = solrRootPath+'bin/post -c '+solrCoreName+' '+filePath+' -params "'+keywordsHash[root]+solrServiceAreaLiteral+resourceName+solrServiceAreaDescendentPath+'"';
 
-            console.log(solrRootPath+'bin/post -c '+solrCoreName+' '+filePath+' -params "'+keywordsHash[root]+solrServiceAreaLiteral+resourceName+solrServiceAreaDescendentPath+'"');
+	    console.log(command);
 
             next();
 
