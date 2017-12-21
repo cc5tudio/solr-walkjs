@@ -39,6 +39,9 @@
   });
 
   var solrKeywordsLiteral;
+  var keywordsHash = {
+
+  }
  
   walker.on("file", function (root, fileStats, next) {
     if(!fileStats.name.startsWith('.'))
@@ -52,11 +55,15 @@
                     return console.log(err);
                 }
 
-                solrKeywordsLiteral = data.split(",").map(function(e) {
+                solrKeywordsLiteral = "&literal.keywords=" + data.split(",").map(function(e) {
                                                         e = urlencode(e.trim()).toLowerCase();
                                                         return e;
 
                                                         }).join("&literal.keywords=");
+
+                // We need this to make sure we properly associate the keywords listed in the Keywords.txt file
+                // in the same directory as the file are properly associated
+                keywordsHash[root] = solrKeywordsLiteral;
 
                 next();
             });
@@ -74,7 +81,8 @@
 
             var filePath = root.replace(/(\s+|&)/g, '\\$1')+'/'+fileStats.name.replace(/(\s+|&)/g, '\\$1');
 
-            console.log(solrRootPath+'bin/post -c '+solrCoreName+' '+filePath+' -params "'+solrKeywordsLiteral+solrServiceAreaLiteral+resourceName+solrServiceAreaDescendentPath+'"');
+
+            console.log(solrRootPath+'bin/post -c '+solrCoreName+' '+filePath+' -params "'+keywordsHash[root]+solrServiceAreaLiteral+resourceName+solrServiceAreaDescendentPath+'"');
 
             next();
 
