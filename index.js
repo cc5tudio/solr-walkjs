@@ -74,17 +74,17 @@
                                                         return e;
             }).join("&literal.service_areas=");
 
+            var solrServiceAreaDescendentPath = "&literal.service_area_descendent_path="+urlencode(truncatedPath);
+
             var resourceName = "&literal.resourcename="+urlencode(fileStats.name);
 
             var filePath = root.replace(/(\s+|&)/g, '\\$1')+'/'+fileStats.name.replace(/(\s+|&)/g, '\\$1');
-            console.log(solrRootPath+'bin/post -c '+solrCoreName+' '+filePath+' -params "'+solrKeywordsLiteral+solrServiceAreaLiteral+resourceName+'"');
+            console.log(solrRootPath+'bin/post -c '+solrCoreName+' '+filePath+' -params "'+solrKeywordsLiteral+solrServiceAreaLiteral+resourceName+solrServiceAreaDescendentPath+'"');
             console.log();
 
             next();
 
         }
-
-
     } else {
 
 	next();
