@@ -55,7 +55,7 @@
                     return console.log(err);
                 }
 
-                solrKeywordsLiteral = "&literal.keywords=" + data.split(",").map(function(e) {
+                solrKeywordsLiteral = "literal.keywords=" + data.split(",").map(function(e) {
                                                         e = urlencode(e.trim()).toLowerCase();
                                                         return e;
 
@@ -81,10 +81,34 @@
 
             var filePath = root.replace(/(\s+|&)/g, '\\$1')+'/'+fileStats.name.replace(/(\s+|&)/g, '\\$1');
 
+            if(typeof(keywordsHash[root]) == "undefined" && fileStats.name.indexOf("Icon") < 0){
+                console.log(filePath);
+                fs.readFile(root+'/Keywords.txt','utf8', function (err, data) {
+                    if (err) {
+                        return console.log(err);
+                    }
 
-            console.log(solrRootPath+'bin/post -c '+solrCoreName+' '+filePath+' -params "'+keywordsHash[root]+solrServiceAreaLiteral+resourceName+solrServiceAreaDescendentPath+'"');
+                    solrKeywordsLiteral = "literal.keywords=" + data.split(",").map(function(e) {
+                            e = urlencode(e.trim()).toLowerCase();
+                            return e;
 
-            next();
+                        }).join("&literal.keywords=");
+
+                    // We need this to make sure we properly associate the keywords listed in the Keywords.txt file
+                    // in the same directory as the file are properly associated
+                    keywordsHash[root] = solrKeywordsLiteral;
+
+                    console.log(solrRootPath+'bin/post -c '+solrCoreName+' '+filePath+' -params "'+keywordsHash[root]+solrServiceAreaLiteral+resourceName+solrServiceAreaDescendentPath+'"');
+
+                    next();
+                });
+            } else {
+                console.log(solrRootPath+'bin/post -c '+solrCoreName+' '+filePath+' -params "'+keywordsHash[root]+solrServiceAreaLiteral+resourceName+solrServiceAreaDescendentPath+'"');
+                next();
+            }
+
+
+
 
         }
     } else {
