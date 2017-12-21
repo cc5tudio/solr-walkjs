@@ -35,7 +35,6 @@
     // * error 
     // * name 
     
-    //console.log('Directory: '+root+dirStatsArray.name);
     next();
   });
 
@@ -46,9 +45,6 @@
     {
         if(fileStats.name === 'Keywords.txt')
         {
-            //console.log(root.replace(/(\s+|&)/g,'\\$1')+'/'+fileStats.name);
-            //fs.readFile(fileStats.name,'utf8', function (err, data) {
-            //var fullFilePath = root.replace(/(\s+|&)/g, '\\$1')+'/'+fileStats.name;
             var fullFilePath = root+'/'+fileStats.name;
 
             fs.readFile(fullFilePath,'utf8', function (err, data) {
@@ -56,10 +52,8 @@
                     return console.log(err);
                 }
 
-                //console.log(data);
-
                 solrKeywordsLiteral = data.split(",").map(function(e) {
-                                                        e = urlencode(e.trim());
+                                                        e = urlencode(e.trim()).toLowerCase();
                                                         return e;
 
                                                         }).join("&literal.keywords=");
@@ -79,8 +73,8 @@
             var resourceName = "&literal.resourcename="+urlencode(fileStats.name);
 
             var filePath = root.replace(/(\s+|&)/g, '\\$1')+'/'+fileStats.name.replace(/(\s+|&)/g, '\\$1');
+
             console.log(solrRootPath+'bin/post -c '+solrCoreName+' '+filePath+' -params "'+solrKeywordsLiteral+solrServiceAreaLiteral+resourceName+solrServiceAreaDescendentPath+'"');
-            console.log();
 
             next();
 
